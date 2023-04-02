@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import api.js from ./api.js
 import "../styles/App.css";
 import SearchBar from "./SearchBar";
 import { MoviesList, MovieDetails } from "./MoviesList&Detail";
