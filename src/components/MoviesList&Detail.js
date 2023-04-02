@@ -17,15 +17,13 @@ const MoviesList = (props) => {
                 return (
                     <li onClick={(e) => handleClick(e, movie.id)} key={index}>
                         <img
-                            src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
+                            src={`https://image.tmdb.org/t/p/w200${movie?.poster_path}`}
                             alt="movie-alt"
                         />
                         <section className="title-year">
-                            <h2 className="movie-title">
-                                {movie.original_title}
-                            </h2>
+                            <h2 className="movie-title">{movie.title}</h2>
                             <p className="movie-release-year">
-                                Release Year: {movie.release_date}
+                                Release Year: {movie.release_date.slice(0, 4)}
                             </p>
                         </section>
                     </li>
@@ -47,15 +45,15 @@ const MovieDetails = ({ selectedMovie, setSelectedMovie }) => {
         <article className="movie-details">
             <section className="movie-detail-img">
                 <img
-                    src={`https://image.tmdb.org/t/p/w500/${selectedMovie?.poster_path}`} //
+                    src={`https://image.tmdb.org/t/p/w200${selectedMovie?.poster_path}`} //
                     alt="movie-poster-alt"
                     className="movie-img"
                 />
             </section>
             <section className="movie-detail-title-year-plot">
                 <h2 className="movie-title-year">
-                    {selectedMovie.original_title} ({selectedMovie.release_date}
-                    )
+                    {selectedMovie.title} (
+                    {selectedMovie.release_date.slice(0, 4) || "0000"})
                 </h2>
                 <p className="movie-plot">{selectedMovie.overview}</p>
                 <button onClick={handleClose} className="close-btn">
