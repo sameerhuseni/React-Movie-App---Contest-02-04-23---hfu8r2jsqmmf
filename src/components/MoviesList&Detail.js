@@ -1,25 +1,69 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { getMovieById } from "./api";
 
-const MoviesList = ({ movies, setSelectedMovie }) => {
-  return (
-    <div>
-      {movies.map(movie => (
-        <div key={movie.id} onClick={() => setSelectedMovie(movie)}>
-          <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt={movie.title} />
-          <h3>{movie.title}</h3>
-          <p>{movie.release_date}</p>
-        </div>
-      ))}
-    </div>
-  );
+const MoviesList = (props) => {
+    const { movies, setSelectedMovie } = props;
+    const handleClick = (event, id) => {
+        console.log("movie clicked", id);
+        getMovieById(id).then((data) => {
+            console.log(data);
+            setSelectedMovie(data);
+        });
+    };
+    console.log(movies);
+    return (
+        <ul>
+            {movies.map((movie, index) => {
+                return (
+                    <li onClick={(e) => handleClick(e, movie.id)} key={index}>
+                        <img
+                            src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
+                            alt="movie-alt"
+                        />
+                        <section className="title-year">
+                            <h2 className="movie-title">
+                                {movie.original_title}
+                            </h2>
+                            <p className="movie-release-year">
+                                Release Year: {movie.release_date}
+                            </p>
+                        </section>
+                    </li>
+                );
+            })}
+        </ul>
+    );
 };
 
+const MovieDetails = ({ selectedMovie, setSelectedMovie }) => {
+    const [movieDetails, setMovieDetails] = useState(null);
+    const handleClose = () => {
+        setSelectedMovie(null);
+    };
+    useEffect(() => {
+        setMovieDetails(selectedMovie);
+    }, []);
+    return (
+        <article className="movie-details">
+            <section className="movie-detail-img">
+                <img
+                    src={`https://image.tmdb.org/t/p/w500/${selectedMovie?.poster_path}`} //
+                    alt="movie-poster-alt"
+                    className="movie-img"
+                />
+            </section>
+            <section className="movie-detail-title-year-plot">
+                <h2 className="movie-title-year">
+                    {selectedMovie.original_title} ({selectedMovie.release_date}
+                    )
+                </h2>
+                <p className="movie-plot">{selectedMovie.overview}</p>
+                <button onClick={handleClose} className="close-btn">
+                    Close
+                </button>
+            </section>
+        </article>
+    );
+};
 
-const MovieDetails = ({ selectedMovie }) => {
-  const [movieDetails, setMovieDetails] = useState(null);
-
-  useEffect(() => {
-    axios.get(`https://api.themoviedb.org/3/movie/${selectedMovie.id}?api_key={API_KEY}`)
-
-export {MoviesList, MovieDetails};
+export { MoviesList, MovieDetails };
