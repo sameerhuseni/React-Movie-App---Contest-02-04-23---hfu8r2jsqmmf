@@ -1,34 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from 'react';
+import axios from 'axios';
 
-const MoviesList = (props) => {
-    return (
-        <ul>
-            <li>
-                <img src={movie.poster_path} alt="movie-alt" />
-                <section className="title-year">
-                    <h2 className="movie-title">Title</h2>
-                    <p className="movie-release-year">Release Year: Year</p>
-                </section>
-            </li>
-        </ul>
-    )
-}
+const MoviesList = ({ movies, setSelectedMovie }) => {
+  return (
+    <div>
+      {movies.map(movie => (
+        <div key={movie.id} onClick={() => setSelectedMovie(movie)}>
+          <img src={`https://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt={movie.title} />
+          <h3>{movie.title}</h3>
+          <p>{movie.release_date}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
 
-const MovieDetails = (props) => {
-    const [movieDetails, setMovieDetails] = useState("");
 
-    return (
-        <article className="movie-details">
-            <section className="movie-detail-img">
-                <img src={movieDetails.poster_path} alt="movie-poster-alt" className="movie-img"/>
-            </section>
-            <section className="movie-detail-title-year-plot">
-                <h2 className="movie-title-year">Title (Release Date)</h2>
-                <p className="movie-plot">Overview</p>
-                <button className="close-btn">Close</button>
-            </section>
-        </article>
-    )
-}
+const MovieDetails = ({ selectedMovie }) => {
+  const [movieDetails, setMovieDetails] = useState(null);
+
+  useEffect(() => {
+    axios.get(`https://api.themoviedb.org/3/movie/${selectedMovie.id}?api_key={API_KEY}`)
 
 export {MoviesList, MovieDetails};
