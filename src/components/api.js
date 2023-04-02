@@ -8,8 +8,7 @@ export const searchMovieData = async (movieName) => {
     return response.json();
 };
 export const getMovieById = async (id) => {
-    const query = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`;
+    const query = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-us`;
     const response = await fetch(query);
     return response.json();
 };
-export {searchMovieData , getMovieById};
